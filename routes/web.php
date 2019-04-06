@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('map');
 });
 
+Route::get('/upload', function () {
+    return view('upload');
+});
+
 Route::post('/upload', function (\Illuminate\Http\Request $request, \Acme\UseCases\LoadFile $useCase) {
     $useCase($request->file);
 });

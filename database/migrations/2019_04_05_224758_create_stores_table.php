@@ -14,7 +14,7 @@ class CreateStoresTable extends Migration
     public function up()
     {
         Schema::create('stores', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('id', 36)->primary();
             $table->string('name');
             $table->geometry('geolocation');
             $table->string('genre')->nullable();

@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/upload', function (\Illuminate\Http\Request $request, \Acme\UseCases\LoadFile $useCase) {
+    $useCase($request->file);
+});

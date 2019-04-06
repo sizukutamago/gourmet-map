@@ -18,6 +18,16 @@ use Acme\Domain\ValueObjects\Store\StoreId;
 class StoreRepository implements StoreRepositoryInterface
 {
     /**
+     * @var \App\Models\Store
+     */
+    private $eloquent;
+
+    public function __construct(\App\Models\Store $eloquent)
+    {
+        $this->eloquent = $eloquent;
+    }
+
+    /**
      * @param StoreId $id
      * @return Store
      */
@@ -39,6 +49,13 @@ class StoreRepository implements StoreRepositoryInterface
      */
     public function save(StoreCollection $storeCollection): void
     {
-        // TODO: Implement save() method.
+        foreach ($storeCollection as $store) {
+            $this->eloquent->create($store->toDatabase());
+        }
+    }
+
+    public function delete(): void
+    {
+        $this->eloquent->query()->delete();
     }
 }

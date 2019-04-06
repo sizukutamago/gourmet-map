@@ -51,7 +51,7 @@ class Store
 
     public function getId(): StoreId
     {
-        return $this->getId();
+        return $this->id;
     }
 
     public function toDatabase(): array

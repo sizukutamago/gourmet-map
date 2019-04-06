@@ -12,22 +12,26 @@ namespace Acme\Infrastructures\Adapters;
 
 use Acme\Domain\Adapters\GetStoreInfomationInterface;
 use Acme\Domain\ValueObjects\Store\Geolocation;
-use Acme\UseCases\LoadFile\StoreCollectionRequest;
 
 class TabelogAdapter implements GetStoreInfomationInterface
 {
     /**
-     * @var StoreCollectionRequest
+     * @var string
      */
-    private $request;
+    private $url;
 
     public function __construct(string $url)
     {
-        $this->request = $url;
+        $this->url = $url;
     }
 
     public function getGeolocation(): Geolocation
     {
-        return new Geolocation('133', '32');
+        $html = file_get_contents($this->url);
+        $dom = \phpQuery::newDocument($html);
+        $query = [];
+        parse_str(parse_url($dom['.js-map-lazyload']->attr('data-original'), PHP_URL_QUERY),$query);
+        $geolocation = explode(',', $query['center']);
+        return new Geolocation($geolocation[0], $geolocation[1]);
     }
 }

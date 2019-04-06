@@ -28,4 +28,6 @@ interface StoreRepositoryInterface
     public function getStoreList(): StoreCollection;
 
     public function save(StoreCollection $storeCollection): void;
+
+    public function delete(): void;
 }

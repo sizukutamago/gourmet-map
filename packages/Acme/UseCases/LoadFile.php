@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace Acme\UseCases;
 
 
+use Acme\Domain\DomainServices\StoreServices;
 use Acme\Domain\Entities\StoreCollection;
 use Acme\Domain\Factories\StoreFactory;
+use Acme\Domain\Repositories\StoreRepositoryInterface;
 use Acme\Infrastructures\Adapters\GoogleSpreadSheetAdapter;
 use Illuminate\Http\UploadedFile;
 
@@ -22,12 +24,18 @@ class LoadFile
      */
     private $factory;
 
-    public function __construct(StoreFactory $factory)
+    /**
+     * @var StoreServices
+     */
+    private $services;
+
+    public function __construct(StoreFactory $factory, StoreServices $services)
     {
         $this->factory = $factory;
+        $this->services = $services;
     }
 
-    public function __invoke(UploadedFile $uploadedFile)
+    public function __invoke(UploadedFile $uploadedFile): void
     {
         switch ($uploadedFile->getClientOriginalExtension()) {
             case 'csv':
@@ -50,6 +58,7 @@ class LoadFile
                 )
             );
         }
-        dd($storeCollection);
+
+        $this->services->save($storeCollection);
     }
 }

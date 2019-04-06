@@ -64,4 +64,16 @@ class Store
             'comment' => $this->comment,
         ];
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId()->getId(),
+            'name' => $this->name,
+            'lat' => $this->geolocation->getLat(),
+            'lng' => $this->geolocation->getLng(),
+            'genre' => $this->genre,
+            'comment' => $this->comment,
+        ];
+    }
 }

@@ -35,4 +35,15 @@ class StoreFactory
             $comment
         );
     }
+
+    public function forDatabase(string $id, string $name, float $lat, float $lng, ?string $genre, ?string $comment): Store
+    {
+        return new Store(
+            new StoreId($id),
+            $name,
+            new Geolocation($lat, $lng),
+            $genre,
+            $comment
+        );
+    }
 }

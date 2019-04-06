@@ -16,7 +16,7 @@ class Geolocation
 
     private $lng;
 
-    public function __construct(string $lat, string $lng)
+    public function __construct(float $lat, float $lng)
     {
         $this->lat = $lat;
         $this->lng = $lng;
@@ -25,7 +25,7 @@ class Geolocation
     /**
      * @return string
      */
-    public function getLat(): string
+    public function getLat(): float
     {
         return $this->lat;
     }
@@ -33,7 +33,7 @@ class Geolocation
     /**
      * @return string
      */
-    public function getLng(): string
+    public function getLng(): float
     {
         return $this->lng;
     }

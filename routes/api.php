@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/stores', function (\Acme\UseCases\GetStoreCollection $useCase) {
+    return json_encode($useCase()->toArray());
+});

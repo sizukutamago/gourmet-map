@@ -32,6 +32,6 @@ class TabelogAdapter implements GetStoreInfomationInterface
         $query = [];
         parse_str(parse_url($dom['.js-map-lazyload']->attr('data-original'), PHP_URL_QUERY),$query);
         $geolocation = explode(',', $query['center']);
-        return new Geolocation($geolocation[0], $geolocation[1]);
+        return new Geolocation((float)$geolocation[0], (float)$geolocation[1]);
     }
 }

@@ -29,4 +29,14 @@ class StoreCollection implements \IteratorAggregate
     {
         return new \ArrayIterator($this->list);
     }
+
+    public function toArray(): array
+    {
+        $array = [];
+        foreach ($this->list as $store) {
+            $array[] = $store->toArray();
+        }
+
+        return $array;
+    }
 }

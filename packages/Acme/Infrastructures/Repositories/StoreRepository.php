@@ -12,6 +12,7 @@ namespace Acme\Infrastructures\Repositories;
 
 use Acme\Domain\Entities\Store;
 use Acme\Domain\Entities\StoreCollection;
+use Acme\Domain\Factories\StoreFactory;
 use Acme\Domain\Repositories\StoreRepositoryInterface;
 use Acme\Domain\ValueObjects\Store\StoreId;
 
@@ -22,9 +23,15 @@ class StoreRepository implements StoreRepositoryInterface
      */
     private $eloquent;
 
-    public function __construct(\App\Models\Store $eloquent)
+    /**
+     * @var StoreFactory
+     */
+    private $factory;
+
+    public function __construct(\App\Models\Store $eloquent, StoreFactory $factory)
     {
         $this->eloquent = $eloquent;
+        $this->factory = $factory;
     }
 
     /**
@@ -41,7 +48,22 @@ class StoreRepository implements StoreRepositoryInterface
      */
     public function getStoreList(): StoreCollection
     {
-        // TODO: Implement getStoreList() method.
+        $stores = $this->eloquent->latlong()->get();
+        $storeCollection = new StoreCollection();
+        foreach ($stores as $store) {
+            $storeCollection->add(
+                $this->factory->forDatabase(
+                    $store->id,
+                    $store->name,
+                    $store->lat,
+                    $store->lng,
+                    $store->genre,
+                    $store->comment
+                )
+            );
+        }
+
+        return $storeCollection;
     }
 
     /**

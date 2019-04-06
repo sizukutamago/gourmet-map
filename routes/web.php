@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('map');
 });
 
 Route::post('/upload', function (\Illuminate\Http\Request $request, \Acme\UseCases\LoadFile $useCase) {

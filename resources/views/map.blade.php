@@ -11,9 +11,50 @@
     </head>
     <body>
         <div id="app">
-            <map-component/>
+            <div id="myMap" style="position:relative;width:100%;height:550px;"></div>
         </div>
     </body>
+    <script src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key={{ env('MAPKEY') }}"></script>
+    <script>
+    let map;
 
-    <script src="js/app.js"></script>
+    function pushpins(now, la, lo, storeName, comment){
+        let location = new Microsoft.Maps.Location(la,lo);
+        let pin = new Microsoft.Maps.Pushpin(location, {
+            color: 'red',
+            title: storeName,
+            subTitle: comment,
+        });
+        now.entities.push(pin);
+    };
+
+    function GetMap() {
+        map = new Microsoft.Maps.Map('#myMap', {
+            center: new Microsoft.Maps.Location(35.695541, 139.7613915), //Location center position
+            mapTypeId: Microsoft.Maps.MapTypeId.load, //aerial,canvasDark,canvasLight,birdseye,grayscale,streetside
+            zoom: 16  //Zoom:1=zoomOut ~ 20=zoomUp
+        });
+
+        getStores();
+    }
+
+    function getStores () {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/api/stores');
+
+        xhr.onload = function () {
+            if (xhr.readyState === xhr.DONE) {
+                if (xhr.status === 200) {
+                    const stores = JSON.parse(xhr.responseText);
+
+                    stores.forEach(function (store, i) {
+                        pushpins(map, store.lat, store.lng, store.name, store.comment);
+                    });
+                }
+            }
+        };
+
+        xhr.send();
+    }
+    </script>
 </html>
